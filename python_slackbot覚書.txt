@@ -1,0 +1,8 @@
+・bot.py
+登録されてるチャンネルにつぶやくと任意の言葉に反応
+
+
+・https://blog.bitmeister.jp/?p=3892で作ったやつ。botアカウント指定でつぶやくと任意の言葉に反応
+知らん言葉の場合はdefaultで定義した言葉を返す。カスタムの余地あり
+run.py
+slack_settings.py
