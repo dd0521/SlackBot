@@ -69,6 +69,30 @@ def getLatestVersionInfo_FireFox(url):
 
     return 'FireFox: ' + verList[0]
 
+def getLatestVersionInfo_Office365(url):
+    soup = bs4.BeautifulSoup( urllib.request.urlopen(url).read(),"lxml")
+    targetSection = soup.find("section", attrs={"class":"ocpIntroduction"})
+    # id=tblID0EIEAAAのTable取得 2018.05.23
+    table = targetSection.findAll("tbody")[0]
+    rows = table.findAll("tr")
+  
+    verList = ""
+    # rowはこんな順番なので条件判定して取りたいもの取得
+    # Channel | Version | Build | Release date
+    for row in rows:
+        # 横方向のアイテムたち取得
+        elements = row.findAll("td")
+
+        # ↓みたいな感じで個々に取得できるので文字列として成型
+        # 'Monthly Channel' '1804' '9226.2156' 'May 14, 2018'
+        verList += '\n'\
+                + 'Channel: ' + elements[0].text.replace('\n',"") +':\n'\
+                + ' Version: ' + elements[1].text.replace('\n',"") \
+                + '\n Build: ' + elements[2].text.replace('\n',"") \
+                + '\n Release date: ' + elements[3].text.replace('\n',"") \
+
+    return 'Office365: ' + verList
+
 def getLatestVersionInfo_Chrome(url):
     # http://phantomjs.org/download.html からそれぞれの環境に合わせたphantomJSのバイナリファイルを落としてくる。
     # 展開したフォルダの中のbinフォルダ内のphantomjs(windows版はphantomjs.exe)を下のスクリプトと同じ階層に入れる。
@@ -117,17 +141,18 @@ url_FireFox='https://www.mozilla.org/en-US/firefox/releases/'
 # https://www.chromium.org/developers/calendarのiframeでここ参照してるけどとりまちょくせつ見にいく。
 # 変わるようなら親(https://www.chromium.org/developers/calendar)から動的にとるかな
 url_Chrome='https://omahaproxy.appspot.com/viewer'
+url_Office365='https://support.office.com/en-us/article/Version-and-build-numbers-of-update-channel-releases-ae942449-1fca-4484-898b-a933ea23def7'
 def VersionCheckMain( _id ):
     if( _id == 'FireFox' ):        
         return getLatestVersionInfo_FireFox(url_FireFox)
     elif( _id == 'Chrome' ):
         return getLatestVersionInfo_Chrome(url_Chrome)
-    else:
-        return getLatestVersionInfo_Chrome(url_Chrome)
+    elif( _id == 'Office365' ):
+        return getLatestVersionInfo_Office365(url_Office365)
         
 
 
 # test call
-# VersionCheckMain('Chrome')
+print(VersionCheckMain('Office365'))
 
 

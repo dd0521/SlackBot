@@ -15,5 +15,6 @@ def post_slack(name, text):
 
 latestVer_FF = verchk.VersionCheckMain('FireFox')
 latestVer_Chrome = verchk.VersionCheckMain('Chrome')
-latestVer_All = '[Latest Version]\n' + latestVer_FF + '\n\n' + latestVer_Chrome
+latestVer_Office365 = verchk.VersionCheckMain('Office365')
+latestVer_All = '[Latest Version]\n' + latestVer_FF + '\n\n' + latestVer_Chrome + '\n\n' + latestVer_Office365
 post_slack( "App Version Notice", latestVer_All )
